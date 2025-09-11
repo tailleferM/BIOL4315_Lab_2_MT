@@ -1,0 +1,39 @@
+---
+title: "Biol4315 Lab-2 Report"
+output: html_document
+date: "2025-09-11"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#QC for high-throughput sequencing data
+
+3.
+```{r q3}
+conda install filtlong
+```
+
+4.
+```{r q4}
+filtlong -p 75 ERR1539001.fastq > ERR1539001_filtered.fastq
+```
+5. 
+```{r q5}
+ sequali --outdir /Users/mtaillefer00/Documents/BIOL4315_Lab_2_MT/Sequali_Reports ERR1539001_filtered.fastq
+```
+6.
+mean length increased to 6,914.58 from 4,888.03
+length range changed
+plots:
+
+more symmetrical seq length distribution
+per base q distribution: higher proportion of good q   score accross board, shape generally same, better high pos end <- due to removal of super long seq(why did filtlong do this?)
+Per pos quality percentiles: read end v similar
+read start similar shape, bigger initial drop but then higher avg afterwards
+Per seq avg q scores: higher percentile across board
+per pos base content: similar
+rest of stuff similar
+
+
