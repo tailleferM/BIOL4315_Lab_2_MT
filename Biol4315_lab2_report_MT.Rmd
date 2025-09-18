@@ -11,29 +11,56 @@ knitr::opts_chunk$set(echo = TRUE)
 #QC for high-throughput sequencing data
 
 3.
-```{r q3}
+```{r q3, eval=FALSE}
 conda install filtlong
 ```
 
 4.
-```{r q4}
+```{r q4, eval=FALSE}
 filtlong -p 75 ERR1539001.fastq > ERR1539001_filtered.fastq
 ```
 5. 
-```{r q5}
- sequali --outdir /Users/mtaillefer00/Documents/BIOL4315_Lab_2_MT/Sequali_Reports ERR1539001_filtered.fastq
+```{r q5,eval=FALSE}
+sequali --outdir /Users/mtaillefer00/Documents/BIOL4315_Lab_2_MT/Sequali_Reports ERR1539001_filtered.fastq
 ```
 6.
-mean length increased to 6,914.58 from 4,888.03
-length range changed
+Changes observed post filtration:
+Mean length increased to 6,914.58 from 4,888.03
+Length range changed
 plots:
+More symmetrical sequence length distribution.
+per base q distribution: higher proportion of good q score across board, shape generally same, better 3' end due to removal of super long sequences.
+Per position quality percentiles: read end v similar.
+Read start similar shape, bigger initial drop but then higher average afterwards.
+Per sequence average q scores: higher percentile across board.
+Per position base content: similar.
 
-more symmetrical seq length distribution
-per base q distribution: higher proportion of good q   score accross board, shape generally same, better high pos end <- due to removal of super long seq(why did filtlong do this?)
-Per pos quality percentiles: read end v similar
-read start similar shape, bigger initial drop but then higher avg afterwards
-Per seq avg q scores: higher percentile across board
-per pos base content: similar
-rest of stuff similar
+8.
+```{r q8, eval = FALSE}
+wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR112/040/ERR11203340/ERR11203340_1.fastq.gz
+wget -nc ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR112/040/ERR11203340/ERR11203340_2.fastq.gz
+```
 
+9. 
+```{r lib, include=FALSE}
+library(Rqc)
+```
 
+```{r q9}
+QCJujuni <- rqc(path = '/Users/mtaillefer00/lab2q9',pattern = '.fastq.gz', openBrowser = FALSE)
+rqcCycleQualityBoxPlot(QCJujuni)
+rqcCycleBaseCallsLinePlot(QCJujuni)
+rqcReadFrequencyPlot(QCJujuni)
+```
+
+The quality score never drops below 20, there is a vertical line at the end of the graph but this is an artifact
+
+The proportion of Ns is constant, at 0
+
+~45% of reads occur once, ~25% occur twice and ~30% occur more than twice
+
+10.
+```{r q10, eval=FALSE}
+QuasR::preprocessReads(reads, truncateEndBases = cutoff)
+```
+Since the quality score does not drop below 20, there is no need to trim bases from the 3' end. If we did observe a drop in q-score, we would use the preprocessReads function from QuasR, using the truncateEndBases attribute set to the cutoff point we observed in the sequence quality per base per cycle graph.

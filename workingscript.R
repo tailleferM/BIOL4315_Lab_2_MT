@@ -90,6 +90,16 @@ while(length(fq <- yield(f))){
 
 # working on question 9 
 library(ShortRead)
-fastqFiles9 <- system.file(package = 'ShortRead', )
-cJujuni <- 
+fastqFiles9 <- c('/Users/mtaillefer00/ERR11203340_2.fastq.gz','/Users/mtaillefer00/ERR11203340_1.fastq.gz')
+cJujuni = readFastq(fastqFiles9)
+library(Rqc)
+QCJujuni <- rqc(path = '/Users/mtaillefer00/lab2q9',pattern = '.fastq.gz', openBrowser = FALSE)
+rqcCycleQualityBoxPlot(QCJujuni)
+#The quality score drops below 20 at cycle 101
+rqcCycleBaseCallsLinePlot(QCJujuni)
+#the proportion of Ns is constant, at 0
+rqcReadFrequencyPlot(QCJujuni)
+#~45% of reads occur once, ~25% occur twice and 30% occur more than twice
 
+# working on question 10
+# truncateEndBases()
